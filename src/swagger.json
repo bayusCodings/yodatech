@@ -12,7 +12,7 @@
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     }
   },
-  "host": "https://yodatech.herokuapp.com",
+  "host": "yodatech.herokuapp.com",
   "basePath": "/",
   "tags": [
     {
