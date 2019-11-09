@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "Api documentation for yodatech api service.",
+    "description": "Documentation for yodatech api service.",
     "version": "1.0.0",
     "title": "Yodatech API Service",
     "contact": {
@@ -25,8 +25,8 @@
     }
   ],
   "schemes": [
-    "http",
-    "https"
+    "https",
+    "http"
   ],
   "paths": {
     "/movies": {
