@@ -1,3 +1,2 @@
 # Yodatech
-##### Api documentation link:
-###### localhost:1007/api-docs
+##### [Api documentation link](https://yodatech.herokuapp.com/api-docs)
