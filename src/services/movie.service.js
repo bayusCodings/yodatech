@@ -20,6 +20,7 @@ class MovieService {
             id: extractedId,
             title: item.title,
             opening_crawl: item.opening_crawl,
+            release_date: item.release_date,
             commentCount
           });
         }
@@ -61,6 +62,10 @@ class MovieService {
         return data.sort((a,b) => (parseInt(a[sortBy]) < parseInt(b[sortBy])) ? -1 : ((parseInt(b[sortBy]) < parseInt(a[sortBy])) ? 1 : 0));
       return data.sort((a,b) => (parseInt(a[sortBy]) < parseInt(b[sortBy])) ? 1 : ((parseInt(b[sortBy]) < parseInt(a[sortBy])) ? -1 : 0));
     }
+  }
+
+  static sortByReleseDate(data) {
+    return data.sort((a,b) => new Date(b.release_date) - new Date(a.release_date))
   }
 
   static filterByGender(data, filter) {

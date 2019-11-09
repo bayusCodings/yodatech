@@ -4,7 +4,8 @@ class MovieController {
   static async getAllMovies(req, res, next) {
     try {
       const movieList = await MovieService.getAllMovies();
-      return res.status(200).json({ success: true, data: movieList.results });
+      const movies = MovieService.sortByReleseDate(movieList.results)
+      return res.status(200).json({ success: true, data: movies });
     } catch(e) {
       next(e);
     }
