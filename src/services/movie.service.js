@@ -1,5 +1,5 @@
 import request from 'request-promise-native';
-import { BASE_URL, DOMAIN } from '../config/keys';
+import { BASE_URL } from '../config/keys';
 import CommentService from './comment.service';
 
 class MovieService {

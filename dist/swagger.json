@@ -1,0 +1,194 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Api documentation for yodatech api service.",
+    "version": "1.0.0",
+    "title": "Yodatech API Service",
+    "contact": {
+      "email": "ogunbayo.abayo@gmail.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "localhost:1007",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Movie",
+      "description": "List of endpoints for movie"
+    },
+    {
+      "name": "Comment",
+      "description": "List of endpoints for comment"
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "paths": {
+    "/movies": {
+      "get": {
+        "tags": [
+          "Movie"
+        ],
+        "summary": "Get the list of all star wars movies",
+        "description": "",
+        "operationId": "getAllMovies",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "status": "success"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/movie/{id}/characters": {
+      "get": {
+        "tags": [
+          "Movie"
+        ],
+        "summary": "Get all characters for a movie",
+        "description": "",
+        "operationId": "getMovieCharacters",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "The movieID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minimum": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "description": "sort details eg sort=name asc or sort=gender desc",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "description": "sort details eg filter=male",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "status": "success"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+
+    "/comment/new": {
+      "post": {
+        "tags": [
+          "Comment"
+        ],
+        "summary": "add new comment",
+        "description": "",
+        "operationId": "addNewComment",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Comment object that is required for store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Comment"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "status": "created"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/comments/{movieId}": {
+      "get": {
+        "tags": [
+          "Comment"
+        ],
+        "summary": "Get list of a movie comments",
+        "description": "",
+        "operationId": "getMovieCommentList",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "movieId",
+            "description": "The movieID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minimum": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "status": "success"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Comment": {
+      "type": "object",
+      "properties": {
+        "movieId": {
+          "type": "string"
+        },
+        "comment": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
