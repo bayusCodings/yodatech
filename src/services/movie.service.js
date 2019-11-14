@@ -9,19 +9,21 @@ class MovieService {
       json: true,
       uri: BASE_URL+'/films',
       transform: async function (body, response, resolveWithFullResponse) {
-        const list = body.results.map(async (item) => {
-          let url = item.url;
-          const extractedId = url[url.length - 2];
-          const commentCount = await CommentService.getMovieCommentCount(extractedId);
+        let list = await Promise.all(
+          body.results.map(async (item) => {
+            let url = item.url;
+            const extractedId = url[url.length - 2];
+            const commentCount = await CommentService.getMovieCommentCount(extractedId);
 
-          return {
-            id: extractedId,
-            title: item.title,
-            opening_crawl: item.opening_crawl,
-            release_date: item.release_date,
-            commentCount
-          };
-        });
+            return {
+              id: extractedId,
+              title: item.title,
+              opening_crawl: item.opening_crawl,
+              release_date: item.release_date,
+              commentCount
+            };
+          })
+        );
 
         return { results: list }
       }
