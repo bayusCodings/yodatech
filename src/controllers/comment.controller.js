@@ -15,16 +15,6 @@ class CommentController {
       next(e);
     }
   }
-
-  static async getMovieComments(req, res, next) {
-    const { movieId } = req.params;
-    try {
-      const movieComments = await CommentService.getCommentsByMovie(movieId);
-      return res.status(200).json({ success: true, data: movieComments });
-    } catch(e) {
-      next(e);
-    }
-  }
 }
     
 export default CommentController;

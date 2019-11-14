@@ -1,4 +1,5 @@
 import Parent from './parent';
+import { Comment } from '../database/models';
 
 class CommentValidator {
   static validateComment(req, res, next) {
@@ -7,6 +8,9 @@ class CommentValidator {
         presence: {
           allowEmpty: false,
           message: '^movieId field is required'
+        },
+        value_exist: {
+          movieIdList: ['1','2','3','4','5','6','7']
         }
       },
 

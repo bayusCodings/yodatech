@@ -34,7 +34,7 @@
         "tags": [
           "Movie"
         ],
-        "summary": "Get the list of all star wars movies",
+        "summary": "Get list of all movies",
         "description": "",
         "operationId": "getAllMovies",
         "consumes": [
@@ -105,8 +105,44 @@
         }
       }
     },
+    "/movie/{id}/comments": {
+      "get": {
+        "tags": [
+          "Movie"
+        ],
+        "summary": "Get all comments for a movie",
+        "description": "",
+        "operationId": "getMovieCommentList",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "The movieID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minimum": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "status": "success"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
 
-    "/comment/new": {
+    "/comment": {
       "post": {
         "tags": [
           "Comment"
@@ -134,42 +170,6 @@
         "responses": {
           "201": {
             "status": "created"
-          },
-          "400": {
-            "description": "Invalid input"
-          }
-        }
-      }
-    },
-    "/comments/{movieId}": {
-      "get": {
-        "tags": [
-          "Comment"
-        ],
-        "summary": "Get list of a movie comments",
-        "description": "",
-        "operationId": "getMovieCommentList",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "movieId",
-            "description": "The movieID",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "minimum": 1
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "status": "success"
           },
           "400": {
             "description": "Invalid input"

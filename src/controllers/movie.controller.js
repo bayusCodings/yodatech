@@ -1,4 +1,5 @@
 import MovieService from '../services/movie.service';
+import CommentService from '../services/comment.service';
 
 class MovieController {
   static async getAllMovies(req, res, next) {
@@ -49,6 +50,16 @@ class MovieController {
       }
 
       return res.status(200).json({ success: true, data });
+    } catch(e) {
+      next(e);
+    }
+  }
+
+  static async getMovieComments(req, res, next) {
+    const { id } = req.params;
+    try {
+      const movieComments = await CommentService.getCommentsByMovie(id);
+      return res.status(200).json({ success: true, data: movieComments });
     } catch(e) {
       next(e);
     }
