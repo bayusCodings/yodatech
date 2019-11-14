@@ -126,7 +126,7 @@
             "description": "The movieID",
             "required": true,
             "schema": {
-              "type": "number",
+              "type": "string",
               "minimum": 1
             }
           }
@@ -183,7 +183,7 @@
       "type": "object",
       "properties": {
         "movieId": {
-          "type": "string"
+          "type": "number"
         },
         "comment": {
           "type": "string"

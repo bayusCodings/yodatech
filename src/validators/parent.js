@@ -25,7 +25,7 @@ const resolveValidation = (res, next, body, constraint) => {
       else{
         if(!res.headersSent) {
           res.status(400).json({
-            status: false, 
+            success: false, 
             message: 'Validation Error',
             data: errors 
           })

@@ -58,6 +58,9 @@ class MovieController {
   static async getMovieComments(req, res, next) {
     const { id } = req.params;
     try {
+      const idExist = await MovieService.getMoviebyId(id);
+      if(!idExist) return res.status(422).json({ success: false, error: "parameter id is non-existent" });
+
       const movieComments = await CommentService.getCommentsByMovie(id);
       return res.status(200).json({ success: true, data: movieComments });
     } catch(e) {
