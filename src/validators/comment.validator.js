@@ -1,16 +1,16 @@
 import Parent from './parent';
-import { Comment } from '../database/models';
+import MovieService from '../services/movie.service';
 
 class CommentValidator {
-  static validateComment(req, res, next) {
+  static async validateComment(req, res, next) {
     let constraints = {
       movieId: {
         presence: {
           allowEmpty: false,
           message: '^movieId field is required'
         },
-        value_exist: {
-          movieIdList: ['1','2','3','4','5','6','7']
+        id_exist: {
+          movieService: MovieService
         }
       },
 

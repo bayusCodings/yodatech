@@ -126,7 +126,7 @@
             "description": "The movieID",
             "required": true,
             "schema": {
-              "type": "string",
+              "type": "number",
               "minimum": 1
             }
           }

@@ -5,7 +5,7 @@ class CommentController {
     const { movieId, comment } = req.body;
     try {
       const newComment = { 
-        movieId, 
+        movieId: Number(movieId), 
         comment,
         ipAddress: req.connection.remoteAddress
       };

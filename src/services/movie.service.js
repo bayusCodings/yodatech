@@ -32,6 +32,21 @@ class MovieService {
     return request(options);
   }
 
+  static async getMoviebyId(id) {
+    let options = {
+      method: 'GET',
+      json: true,
+      uri: BASE_URL+'/films/'+id,
+    }
+    
+    try {
+      await request(options);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   static getMovieCharacters(id) {
     let options = {
       method: 'GET',
