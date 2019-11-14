@@ -64,9 +64,9 @@ class MovieService {
     return request(options);
   }
 
-  static sortCharacters(data, sort) {
-    const [sortBy, order] = sort.split(' ');
-
+  static sortCharacters(data, sortBy, order) {
+    if(typeof order === 'undefined') order = 'asc';
+    
     if(sortBy != 'height'){
       if (order == 'asc')
         return data.sort((a,b) => (a[sortBy] < b[sortBy]) ? -1 : ((b[sortBy] < a[sortBy]) ? 1 : 0));
@@ -89,21 +89,31 @@ class MovieService {
     });
   }
 
-  static getTotalHeight(data) {
-    let total = 0;
-    for(let datum of data){
-      total = total + parseInt(datum.height)
-    }
+  static addMetaData(data) {
+    let characters = data.map(item => {
+      return {
+        ...item,
+        metadata: {
+          totalHeight: {
+            cm: item.height,
+            feet: this.centimeterToFoot(item.height),
+            inches: this.centimeterToInch(item.height)
+          }
+        }
+      }
+    });
 
-    return total;
+    return characters;
   }
 
   static centimeterToFoot(heightIncm) {
-    return heightIncm/30.48;
+    let result = heightIncm/30.48;
+    return result.toFixed(2);
   }
 
   static centimeterToInch(heightIncm) {
-    return heightIncm/2.54;
+    let result = heightIncm/2.54;
+    return result.toFixed(2);
   }
 }
 

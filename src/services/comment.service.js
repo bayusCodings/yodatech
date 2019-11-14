@@ -14,6 +14,7 @@ class CommentService {
     })
   }
 
+  // counts all comments for a movie
   static getMovieCommentCount(movieId) {
     return Comment.count({ where: {movieId: movieId} })
   }

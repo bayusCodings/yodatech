@@ -34,7 +34,8 @@ function () {
         },
         order: [['id', 'DESC']]
       });
-    }
+    } // counts all comments for a movie
+
   }, {
     key: "getMovieCommentCount",
     value: function getMovieCommentCount(movieId) {

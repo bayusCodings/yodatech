@@ -10,7 +10,7 @@ class CommentController {
         ipAddress: req.connection.remoteAddress
       };
       const createdComment = await CommentService.create(newComment);
-      return res.status(200).json({ success: true, data: createdComment });
+      return res.status(201).json({ success: true, data: createdComment });
     } catch(e) {
       next(e);
     }

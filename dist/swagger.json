@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "Api documentation for yodatech api service.",
+    "description": "Documentation for yodatech api service.",
     "version": "1.0.0",
     "title": "Yodatech API Service",
     "contact": {
@@ -12,7 +12,7 @@
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     }
   },
-  "host": "localhost:1007",
+  "host": "yodatech.herokuapp.com",
   "basePath": "/",
   "tags": [
     {
@@ -25,8 +25,8 @@
     }
   ],
   "schemes": [
-    "http",
-    "https"
+    "https",
+    "http"
   ],
   "paths": {
     "/movies": {
@@ -34,7 +34,7 @@
         "tags": [
           "Movie"
         ],
-        "summary": "Get the list of all star wars movies",
+        "summary": "Get list of all movies",
         "description": "",
         "operationId": "getAllMovies",
         "consumes": [
@@ -81,7 +81,15 @@
           {
             "in": "query",
             "name": "sort",
-            "description": "sort details eg sort=name asc or sort=gender desc",
+            "description": "sort details eg sort=name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "description": "order details eg order=asc",
             "schema": {
               "type": "string"
             }
@@ -105,8 +113,44 @@
         }
       }
     },
+    "/movie/{id}/comments": {
+      "get": {
+        "tags": [
+          "Movie"
+        ],
+        "summary": "Get all comments for a movie",
+        "description": "",
+        "operationId": "getMovieCommentList",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "The movieID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minimum": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "status": "success"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
 
-    "/comment/new": {
+    "/comment": {
       "post": {
         "tags": [
           "Comment"
@@ -140,42 +184,6 @@
           }
         }
       }
-    },
-    "/comments/{movieId}": {
-      "get": {
-        "tags": [
-          "Comment"
-        ],
-        "summary": "Get list of a movie comments",
-        "description": "",
-        "operationId": "getMovieCommentList",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "movieId",
-            "description": "The movieID",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "minimum": 1
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "status": "success"
-          },
-          "400": {
-            "description": "Invalid input"
-          }
-        }
-      }
     }
   },
   "definitions": {
@@ -183,7 +191,7 @@
       "type": "object",
       "properties": {
         "movieId": {
-          "type": "string"
+          "type": "number"
         },
         "comment": {
           "type": "string"

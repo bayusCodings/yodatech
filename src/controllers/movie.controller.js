@@ -13,40 +13,30 @@ class MovieController {
   }
 
   static async getMovieCharacters(req, res, next) {
-    let data = {};
     const { id } = req.params;
-    const { sort, filter } = req.query
+    const { sort, order, filter } = req.query;
+
+    const idExist = await MovieService.getMoviebyId(id);
+    if(!idExist) return res.status(422).json({ success: false, error: "parameter id is non-existent" });
 
     try {
+      let data = {};
+
       const movieCharacters = await MovieService.getMovieCharacters(id);
       data.result = movieCharacters;
 
       if(typeof sort !== 'undefined'){
-        const sortedCharacters = MovieService.sortCharacters(movieCharacters, sort);
-        const totalHeight = MovieService.getTotalHeight(sortedCharacters);
-        data.result = sortedCharacters
-        data.metadata = {
-          count: sortedCharacters.length,
-          height: {
-            cm: totalHeight,
-            feet: MovieService.centimeterToFoot(totalHeight),
-            inches: MovieService.centimeterToInch(totalHeight)
-          }
-        }
+        const characters = MovieService.sortCharacters(movieCharacters, sort, order);
+        const sortedCharacters = MovieService.addMetaData(characters);
+        data.count = sortedCharacters.length;
+        data.result = sortedCharacters;
       }
 
       if(typeof filter !== 'undefined'){
-        const filteredCharacters = MovieService.filterByGender(movieCharacters, filter);
-        const totalHeight = MovieService.getTotalHeight(filteredCharacters);
-        data.result = filteredCharacters
-        data.metadata = {
-          count: filteredCharacters.length,
-          height: {
-            cm: totalHeight,
-            feet: MovieService.centimeterToFoot(totalHeight),
-            inches: MovieService.centimeterToInch(totalHeight)
-          }
-        }
+        const characterList = MovieService.filterByGender(movieCharacters, filter);
+        const filteredCharacters = MovieService.addMetaData(characterList);
+        data.count = filteredCharacters.length;
+        data.result = filteredCharacters;
       }
 
       return res.status(200).json({ success: true, data });

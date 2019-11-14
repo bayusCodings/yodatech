@@ -7,6 +7,8 @@ exports["default"] = void 0;
 
 var _movie = _interopRequireDefault(require("../services/movie.service"));
 
+var _comment = _interopRequireDefault(require("../services/comment.service"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -32,7 +34,7 @@ function () {
       var _getAllMovies = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee(req, res, next) {
-        var movieList;
+        var movieList, movies;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -43,22 +45,23 @@ function () {
 
               case 3:
                 movieList = _context.sent;
+                movies = _movie["default"].sortByReleseDate(movieList.results);
                 return _context.abrupt("return", res.status(200).json({
                   success: true,
-                  data: movieList.results
+                  data: movies
                 }));
 
-              case 7:
-                _context.prev = 7;
+              case 8:
+                _context.prev = 8;
                 _context.t0 = _context["catch"](0);
                 next(_context.t0);
 
-              case 10:
+              case 11:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 7]]);
+        }, _callee, null, [[0, 8]]);
       }));
 
       function getAllMovies(_x, _x2, _x3) {
@@ -73,49 +76,52 @@ function () {
       var _getMovieCharacters = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee2(req, res, next) {
-        var data, id, _req$query, sort, filter, movieCharacters, sortedCharacters, totalHeight, filteredCharacters, _totalHeight;
+        var id, _req$query, sort, order, filter, idExist, data, movieCharacters, characters, sortedCharacters, characterList, filteredCharacters;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                data = {};
                 id = req.params.id;
-                _req$query = req.query, sort = _req$query.sort, filter = _req$query.filter;
-                _context2.prev = 3;
-                _context2.next = 6;
+                _req$query = req.query, sort = _req$query.sort, order = _req$query.order, filter = _req$query.filter;
+                _context2.next = 4;
+                return _movie["default"].getMoviebyId(id);
+
+              case 4:
+                idExist = _context2.sent;
+
+                if (idExist) {
+                  _context2.next = 7;
+                  break;
+                }
+
+                return _context2.abrupt("return", res.status(422).json({
+                  success: false,
+                  error: "parameter id is non-existent"
+                }));
+
+              case 7:
+                _context2.prev = 7;
+                data = {};
+                _context2.next = 11;
                 return _movie["default"].getMovieCharacters(id);
 
-              case 6:
+              case 11:
                 movieCharacters = _context2.sent;
                 data.result = movieCharacters;
 
                 if (typeof sort !== 'undefined') {
-                  sortedCharacters = _movie["default"].sortCharacters(movieCharacters, sort);
-                  totalHeight = _movie["default"].getTotalHeight(sortedCharacters);
+                  characters = _movie["default"].sortCharacters(movieCharacters, sort, order);
+                  sortedCharacters = _movie["default"].addMetaData(characters);
+                  data.count = sortedCharacters.length;
                   data.result = sortedCharacters;
-                  data.metadata = {
-                    count: sortedCharacters.length,
-                    height: {
-                      cm: totalHeight,
-                      feet: _movie["default"].centimeterToFoot(totalHeight),
-                      inches: _movie["default"].centimeterToInch(totalHeight)
-                    }
-                  };
                 }
 
                 if (typeof filter !== 'undefined') {
-                  filteredCharacters = _movie["default"].filterByGender(movieCharacters, filter);
-                  _totalHeight = _movie["default"].getTotalHeight(filteredCharacters);
+                  characterList = _movie["default"].filterByGender(movieCharacters, filter);
+                  filteredCharacters = _movie["default"].addMetaData(characterList);
+                  data.count = filteredCharacters.length;
                   data.result = filteredCharacters;
-                  data.metadata = {
-                    count: filteredCharacters.length,
-                    height: {
-                      cm: _totalHeight,
-                      feet: _movie["default"].centimeterToFoot(_totalHeight),
-                      inches: _movie["default"].centimeterToInch(_totalHeight)
-                    }
-                  };
                 }
 
                 return _context2.abrupt("return", res.status(200).json({
@@ -123,17 +129,17 @@ function () {
                   data: data
                 }));
 
-              case 13:
-                _context2.prev = 13;
-                _context2.t0 = _context2["catch"](3);
+              case 18:
+                _context2.prev = 18;
+                _context2.t0 = _context2["catch"](7);
                 next(_context2.t0);
 
-              case 16:
+              case 21:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, null, [[3, 13]]);
+        }, _callee2, null, [[7, 18]]);
       }));
 
       function getMovieCharacters(_x4, _x5, _x6) {
@@ -141,6 +147,65 @@ function () {
       }
 
       return getMovieCharacters;
+    }()
+  }, {
+    key: "getMovieComments",
+    value: function () {
+      var _getMovieComments = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee3(req, res, next) {
+        var id, idExist, movieComments;
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                id = req.params.id;
+                _context3.prev = 1;
+                _context3.next = 4;
+                return _movie["default"].getMoviebyId(id);
+
+              case 4:
+                idExist = _context3.sent;
+
+                if (idExist) {
+                  _context3.next = 7;
+                  break;
+                }
+
+                return _context3.abrupt("return", res.status(422).json({
+                  success: false,
+                  error: "parameter id is non-existent"
+                }));
+
+              case 7:
+                _context3.next = 9;
+                return _comment["default"].getCommentsByMovie(id);
+
+              case 9:
+                movieComments = _context3.sent;
+                return _context3.abrupt("return", res.status(200).json({
+                  success: true,
+                  data: movieComments
+                }));
+
+              case 13:
+                _context3.prev = 13;
+                _context3.t0 = _context3["catch"](1);
+                next(_context3.t0);
+
+              case 16:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, null, [[1, 13]]);
+      }));
+
+      function getMovieComments(_x7, _x8, _x9) {
+        return _getMovieComments.apply(this, arguments);
+      }
+
+      return getMovieComments;
     }()
   }]);
 

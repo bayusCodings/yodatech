@@ -81,7 +81,15 @@
           {
             "in": "query",
             "name": "sort",
-            "description": "sort details eg sort=name asc or sort=gender desc",
+            "description": "sort details eg sort=name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "description": "order details eg order=asc",
             "schema": {
               "type": "string"
             }
