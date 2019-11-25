@@ -39,13 +39,7 @@ require('dotenv').config();
 
 var isProduction = process.env.NODE_ENV === 'production';
 var app = (0, _express["default"])();
-var corsOptions = {
-  credentials: true,
-  origin: [],
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-
-};
-app.use((0, _cors["default"])(corsOptions)); // compression and header security middleware
+app.use((0, _cors["default"])()); // compression and header security middleware
 
 app.use((0, _compression["default"])());
 app.use((0, _helmet["default"])());

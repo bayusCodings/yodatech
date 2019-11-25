@@ -13,6 +13,11 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+/**
+ *
+ *
+ * @class CommentService
+ */
 var CommentService =
 /*#__PURE__*/
 function () {
@@ -22,9 +27,27 @@ function () {
 
   _createClass(CommentService, null, [{
     key: "create",
+
+    /**
+     * create new comment
+     *
+     * @static
+     * @param {object} comment comment data(movieId, comment, ipAddress)
+     * @returns {object} newly created comment
+     * @memberof CommentService
+     */
     value: function create(comment) {
       return _models.Comment.create(comment);
     }
+    /**
+     * get all comments by movie id
+     *
+     * @static
+     * @param {number} movieId movie id
+     * @returns {Array} list of movie comments
+     * @memberof CommentService
+     */
+
   }, {
     key: "getCommentsByMovie",
     value: function getCommentsByMovie(movieId) {
@@ -34,7 +57,15 @@ function () {
         },
         order: [['id', 'DESC']]
       });
-    } // counts all comments for a movie
+    }
+    /**
+     * counts all comments by movie id
+     *
+     * @static
+     * @param {number} movieId movie id
+     * @returns {number} total count of comment for a movie
+     * @memberof CommentService
+     */
 
   }, {
     key: "getMovieCommentCount",

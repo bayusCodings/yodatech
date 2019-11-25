@@ -51,7 +51,7 @@ function () {
                       allowEmpty: false,
                       message: '^movieId field is required'
                     },
-                    id_exist: {
+                    idExist: {
                       movieService: _movie["default"]
                     }
                   },

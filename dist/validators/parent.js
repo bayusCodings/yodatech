@@ -21,7 +21,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var validators = {};
 
-validators.id_exist =
+validators.idExist =
 /*#__PURE__*/
 function () {
   var _ref = _asyncToGenerator(

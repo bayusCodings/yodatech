@@ -21,6 +21,11 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+/**
+ *
+ *
+ * @class MovieController
+ */
 var MovieController =
 /*#__PURE__*/
 function () {
@@ -30,6 +35,17 @@ function () {
 
   _createClass(MovieController, null, [{
     key: "getAllMovies",
+
+    /**
+     * Get list of all movies
+     *
+     * @static
+     * @param {object} req express request object
+     * @param {object} res express response object
+     * @param {object} next next middleware
+     * @returns {json} json object with status, list of movies
+     * @memberof MovieController
+     */
     value: function () {
       var _getAllMovies = _asyncToGenerator(
       /*#__PURE__*/
@@ -48,6 +64,7 @@ function () {
                 movies = _movie["default"].sortByReleseDate(movieList.results);
                 return _context.abrupt("return", res.status(200).json({
                   success: true,
+                  message: "ok",
                   data: movies
                 }));
 
@@ -70,20 +87,31 @@ function () {
 
       return getAllMovies;
     }()
+    /**
+     * Get list of characters for a movie
+     *
+     * @static
+     * @param {object} req express request object
+     * @param {object} res express response object
+     * @param {object} next next middleware
+     * @returns {json} json object with status, list of characters for a movie
+     * @memberof MovieController
+     */
+
   }, {
     key: "getMovieCharacters",
     value: function () {
       var _getMovieCharacters = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee2(req, res, next) {
-        var id, _req$query, sort, order, filter, idExist, data, movieCharacters, characters, sortedCharacters, characterList, filteredCharacters;
+        var id, _req$query, sort, order, gender, idExist, data, movieCharacters, characters, sortedCharacters, characterList, filteredCharacters;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 id = req.params.id;
-                _req$query = req.query, sort = _req$query.sort, order = _req$query.order, filter = _req$query.filter;
+                _req$query = req.query, sort = _req$query.sort, order = _req$query.order, gender = _req$query.gender;
                 _context2.next = 4;
                 return _movie["default"].getMoviebyId(id);
 
@@ -97,7 +125,7 @@ function () {
 
                 return _context2.abrupt("return", res.status(422).json({
                   success: false,
-                  error: "parameter id is non-existent"
+                  message: "parameter id is non-existent"
                 }));
 
               case 7:
@@ -117,8 +145,8 @@ function () {
                   data.result = sortedCharacters;
                 }
 
-                if (typeof filter !== 'undefined') {
-                  characterList = _movie["default"].filterByGender(movieCharacters, filter);
+                if (typeof gender !== 'undefined') {
+                  characterList = _movie["default"].filterByGender(movieCharacters, gender);
                   filteredCharacters = _movie["default"].addMetaData(characterList);
                   data.count = filteredCharacters.length;
                   data.result = filteredCharacters;
@@ -126,7 +154,9 @@ function () {
 
                 return _context2.abrupt("return", res.status(200).json({
                   success: true,
-                  data: data
+                  message: "ok",
+                  data: data.result,
+                  count: data.count
                 }));
 
               case 18:
@@ -148,6 +178,17 @@ function () {
 
       return getMovieCharacters;
     }()
+    /**
+     * Get list of all comments for a movie
+     *
+     * @static
+     * @param {object} req express request object
+     * @param {object} res express response object
+     * @param {object} next next middleware
+     * @returns {json} json object with status, list of movie comments
+     * @memberof MovieController
+     */
+
   }, {
     key: "getMovieComments",
     value: function () {
@@ -174,7 +215,7 @@ function () {
 
                 return _context3.abrupt("return", res.status(422).json({
                   success: false,
-                  error: "parameter id is non-existent"
+                  message: "parameter id is non-existent"
                 }));
 
               case 7:
@@ -185,6 +226,7 @@ function () {
                 movieComments = _context3.sent;
                 return _context3.abrupt("return", res.status(200).json({
                   success: true,
+                  message: "ok",
                   data: movieComments
                 }));
 

@@ -4,9 +4,9 @@ import app from '../'
 
 const expect = chai.expect;
 
-describe('GET /movies', () => {
+describe('GET /movie', () => {
   it('should get list of all movies', async () => {
-    const url = '/movies';
+    const url = '/movie';
     const res = await request(app).get(url);
 
     expect(res.status).to.equal(200);

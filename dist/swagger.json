@@ -29,7 +29,7 @@
     "http"
   ],
   "paths": {
-    "/movies": {
+    "/movie": {
       "get": {
         "tags": [
           "Movie"
@@ -96,8 +96,8 @@
           },
           {
             "in": "query",
-            "name": "filter",
-            "description": "sort details eg filter=male",
+            "name": "gender",
+            "description": "sort details eg gender=male",
             "schema": {
               "type": "string"
             }

@@ -19,6 +19,11 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+/**
+ *
+ *
+ * @class CommentController
+ */
 var CommentController =
 /*#__PURE__*/
 function () {
@@ -28,6 +33,17 @@ function () {
 
   _createClass(CommentController, null, [{
     key: "addNewComment",
+
+    /**
+     * Make new comment on a movie
+     *
+     * @static
+     * @param {object} req express request object
+     * @param {object} res express response object
+     * @param {object} next next middleware
+     * @returns {json} json object with status, newly created comment
+     * @memberof CommentController
+     */
     value: function () {
       var _addNewComment = _asyncToGenerator(
       /*#__PURE__*/
