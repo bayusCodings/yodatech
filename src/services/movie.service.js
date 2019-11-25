@@ -83,9 +83,9 @@ class MovieService {
     return data.sort((a,b) => new Date(b.release_date) - new Date(a.release_date))
   }
 
-  static filterByGender(data, filter) {
+  static filterByGender(data, gender) {
     return data.filter(datum => {
-      return datum.gender == filter
+      return datum.gender == gender
     });
   }
 
