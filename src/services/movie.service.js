@@ -18,8 +18,8 @@ class MovieService {
             return {
               id: extractedId,
               title: item.title,
-              opening_crawl: item.opening_crawl,
-              release_date: item.release_date,
+              openingCrawl: item.opening_crawl,
+              releaseDate: item.release_date,
               commentCount
             };
           })
@@ -47,7 +47,7 @@ class MovieService {
     }
   }
 
-  static getMovieCharacters(id) {
+  static async getMovieCharacters(id) {
     let options = {
       method: 'GET',
       json: true,
@@ -61,7 +61,8 @@ class MovieService {
       }
     };
     
-    return request(options);
+    const data = await request(options);
+    return this.toCamelCase(data);
   }
 
   static sortCharacters(data, sortBy, order) {
@@ -80,7 +81,7 @@ class MovieService {
   }
 
   static sortByReleseDate(data) {
-    return data.sort((a,b) => new Date(b.release_date) - new Date(a.release_date))
+    return data.sort((a,b) => new Date(b.releaseDate) - new Date(a.releaseDate))
   }
 
   static filterByGender(data, gender) {
@@ -114,6 +115,31 @@ class MovieService {
   static centimeterToInch(heightIncm) {
     let result = heightIncm/2.54;
     return result.toFixed(2);
+  }
+
+  static async toCamelCase(data) {
+    return await Promise.all(
+      data.map(async (item) => {
+        return {
+          name: item.name,
+          height: item.height,
+          mass: item.mass,
+          hairColor: item.hair_color,
+          skinColor: item.skin_color,
+          eyeColor: item.eye_color,
+          birthYear: item.birth_year,
+          gender: item.gender,
+          homeWorld: item.homeworld,
+          films: item.films,
+          species: item.species,
+          vehicles: item.vehicles,
+          starships: item.starships,
+          created: item.created,
+          edited: item.edited,
+          ur: item.url,
+        };
+      })
+    );
   }
 }
 

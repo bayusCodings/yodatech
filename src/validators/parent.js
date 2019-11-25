@@ -2,7 +2,7 @@ import validate from 'validate.js';
 
 let validators = {};
 
-validators.id_exist = async function(value, options, key, attributes){
+validators.idExist = async function(value, options, key, attributes){
   if(typeof value === 'undefined') return;
 	const movieService = options.movieService;
   let result = await movieService.getMoviebyId(value);
