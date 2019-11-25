@@ -12,6 +12,10 @@ describe('GET /movies', () => {
     expect(res.status).to.equal(200);
     expect(res.body.data).to.be.a('array');
     expect(res.body).to.have.property("success", true);
+    expect(res.body).to.have.nested.property("data[0].title");
+    expect(res.body).to.have.nested.property("data[0].openingCrawl");
+    expect(res.body).to.have.nested.property("data[0].releaseDate");
+    expect(res.body).to.have.nested.property("data[0].commentCount");
   });
 });
 
@@ -32,7 +36,7 @@ describe('GET /movie/:id/characters', () => {
       const res = await request(app).get(url);
 
       expect(res.status).to.equal(200);
-      expect(res.body.data.result).to.be.a('array');
+      expect(res.body.data).to.be.a('array');
       expect(res.body).to.have.property("success", true);
     });
   });
@@ -57,6 +61,10 @@ describe('GET /movie/:id/comments', () => {
       expect(res.status).to.equal(200);
       expect(res.body.data).to.be.a('array');
       expect(res.body).to.have.property("success", true);
+      expect(res.body).to.have.nested.property("data[0].comment");
+      expect(res.body).to.have.nested.property("data[0].ipAddress");
+      expect(res.body).to.have.nested.property("data[0].createdAt");
+      expect(res.body).to.have.nested.property("data[0].updatedAt");
     });
   });
 });

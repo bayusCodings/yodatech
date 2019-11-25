@@ -29,7 +29,7 @@
     "http"
   ],
   "paths": {
-    "/movies": {
+    "/movie": {
       "get": {
         "tags": [
           "Movie"

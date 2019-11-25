@@ -1,7 +1,22 @@
 import MovieService from '../services/movie.service';
 import CommentService from '../services/comment.service';
 
+/**
+ *
+ *
+ * @class MovieController
+ */
 class MovieController {
+  /**
+   * Get list of all movies
+   *
+   * @static
+   * @param {object} req express request object
+   * @param {object} res express response object
+   * @param {object} next next middleware
+   * @returns {json} json object with status, list of movies
+   * @memberof MovieController
+   */
   static async getAllMovies(req, res, next) {
     try {
       const movieList = await MovieService.getAllMovies();
@@ -12,6 +27,16 @@ class MovieController {
     }
   }
 
+  /**
+   * Get list of characters for a movie
+   *
+   * @static
+   * @param {object} req express request object
+   * @param {object} res express response object
+   * @param {object} next next middleware
+   * @returns {json} json object with status, list of characters for a movie
+   * @memberof MovieController
+   */
   static async getMovieCharacters(req, res, next) {
     const { id } = req.params;
     const { sort, order, gender } = req.query;
@@ -20,7 +45,7 @@ class MovieController {
     if(!idExist) return res.status(422).json({ success: false, message: "parameter id is non-existent" });
 
     try {
-      let data = {};
+      const data = {};
 
       const movieCharacters = await MovieService.getMovieCharacters(id);
       data.result = movieCharacters;
@@ -45,6 +70,16 @@ class MovieController {
     }
   }
 
+  /**
+   * Get list of all comments for a movie
+   *
+   * @static
+   * @param {object} req express request object
+   * @param {object} res express response object
+   * @param {object} next next middleware
+   * @returns {json} json object with status, list of movie comments
+   * @memberof MovieController
+   */
   static async getMovieComments(req, res, next) {
     const { id } = req.params;
     try {

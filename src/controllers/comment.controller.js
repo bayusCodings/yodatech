@@ -1,6 +1,21 @@
 import CommentService from '../services/comment.service';
 
+/**
+ *
+ *
+ * @class CommentController
+ */
 class CommentController {
+  /**
+   * Make new comment on a movie
+   *
+   * @static
+   * @param {object} req express request object
+   * @param {object} res express response object
+   * @param {object} next next middleware
+   * @returns {json} json object with status, newly created comment
+   * @memberof CommentController
+   */
   static async addNewComment(req, res, next) {
     const { movieId, comment } = req.body;
     try {
