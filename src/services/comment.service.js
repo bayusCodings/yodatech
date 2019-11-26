@@ -1,7 +1,11 @@
 import { Comment } from '../database/models';
-import cache from 'memory-cache';
+import { REDIS_URL } from '../config/keys'
+import redis from 'redis';
+import util from 'util';
 
-const memCache = new cache.Cache();
+const client = redis.createClient(REDIS_URL);
+client.hget = util.promisify(client.hget)
+const hashKey = 'yodatech';
 
 /**
  *
@@ -21,7 +25,7 @@ class CommentService {
     const key = 'getCommentsByMovie'+comment.movieId;
     const response = await Comment.create(comment);
 
-    memCache.del(key);
+    client.hdel(hashKey, key)
     return response;
   }
 
@@ -35,10 +39,10 @@ class CommentService {
    */
   static async getCommentsByMovie(movieId) {
     const key = 'getCommentsByMovie'+movieId;
-    const cacheContent = memCache.get(key);
-    
+    const cacheContent = await client.hget(hashKey, key);
+
     if(cacheContent)
-      return cacheContent;
+      return JSON.parse(cacheContent);
 
     const response = await Comment.findAll({ 
       where: {movieId: movieId},
@@ -47,7 +51,7 @@ class CommentService {
       ]
     });
 
-    memCache.put(key, response);
+    client.hset(hashKey, key, JSON.stringify(response), 'EX', 86400);
     return response;
   }
 
