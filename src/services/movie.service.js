@@ -1,6 +1,9 @@
 import { BASE_URL } from '../config/keys';
 import CommentService from './comment.service';
 import Http from './http.service';
+import cache from 'memory-cache';
+
+const memCache = new cache.Cache();
 
 /**
  *
@@ -8,6 +11,7 @@ import Http from './http.service';
  * @class MovieService
  */
 class MovieService {
+
   /**
    * Get list of all movies
    *
@@ -15,33 +19,39 @@ class MovieService {
    * @returns {Array} list of all movies
    * @memberof MovieService
    */
-  static getAllMovies() {
+  static async getAllMovies() {
     const payload = {};
+    const key = 'movies'
+
+    const cacheContent = memCache.get(key);
+    if(cacheContent) 
+      return cacheContent;
 
     const transform = async function (body, response, resolveWithFullResponse) {
       const list = await Promise.all(
         body.results.map(async (item) => {
           const url = item.url;
           const extractedId = url[url.length - 2];
-          const commentCount = await CommentService.getMovieCommentCount(extractedId);
 
           return {
             id: extractedId,
             title: item.title,
             openingCrawl: item.opening_crawl,
             releaseDate: item.release_date,
-            commentCount
           };
         })
       );
 
-      return { results: list }
+      return list
     }
 
     payload.uri = BASE_URL+'/films';
     payload.transform = transform;
     
-    return Http.get(payload);
+    const response = await Http.get(payload);
+    memCache.put(key, response);
+
+    return response;
   }
 
   /**
@@ -49,19 +59,27 @@ class MovieService {
    *
    * @static
    * @param {number} id movie id
-   * @returns {object} movie data
+   * @returns {boolean} true if found by id, false if not
    * @memberof MovieService
    */
   static async getMoviebyId(id) {
+    const key = 'getMovieById'+id;
     const payload = {
       uri: BASE_URL+'/films/'+id,
     }
+
+    const cacheContent = memCache.get(key);
+    if(cacheContent != null)
+      return cacheContent;
     
     try {
       await Http.get(payload);
+      // cmovie was found
+      memCache.put(key, true);
       return true;
     } catch (e) {
       // could not find movie by id
+      memCache.put(key, false);
       return false;
     }
   }
@@ -76,6 +94,11 @@ class MovieService {
    */
   static async getMovieCharacters(id) {
     const payload = {};
+    const key = 'getMovieCharacters'+id;
+
+    const cacheContent = memCache.get(key);
+    if(cacheContent) 
+      return cacheContent;
 
     const transform = function (body, response, resolveWithFullResponse) {
       const allRequests = body.characters.map(uri => 
@@ -90,7 +113,10 @@ class MovieService {
     payload.transform = transform;
     
     const data = await Http.get(payload);
-    return this.toCamelCase(data);
+    const response = await this.toCamelCase(data);
+    memCache.put(key, response);
+
+    return response;
   }
 
   /**
@@ -227,6 +253,27 @@ class MovieService {
         };
       })
     );
+  }
+
+  /**
+   * add comment count to movies
+   *
+   * @static
+   * @param {Array} data list of movies
+   * @returns {Array} list of movies with comment count
+   * @memberof MovieService
+   */
+  static async addCommentCount(data) {
+    const movieList = await Promise.all(
+      data.map(async item => {
+        return {
+          ...item,
+          commentCount: await CommentService.getMovieCommentCount(item.id)
+        }
+      })
+    );
+
+    return movieList;
   }
 }
 

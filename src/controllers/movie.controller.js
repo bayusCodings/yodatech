@@ -19,8 +19,9 @@ class MovieController {
    */
   static async getAllMovies(req, res, next) {
     try {
-      const movieList = await MovieService.getAllMovies();
-      const movies = MovieService.sortByReleseDate(movieList.results)
+      const allMovies = await MovieService.getAllMovies();
+      const movieList = await MovieService.addCommentCount(allMovies)
+      const movies = MovieService.sortByReleseDate(movieList)
       return res.status(200).json({ success: true, message: "ok", data: movies });
     } catch(e) {
       next(e);

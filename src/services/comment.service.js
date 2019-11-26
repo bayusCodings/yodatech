@@ -1,4 +1,7 @@
 import { Comment } from '../database/models';
+import cache from 'memory-cache';
+
+const memCache = new cache.Cache();
 
 /**
  *
@@ -14,8 +17,12 @@ class CommentService {
    * @returns {object} newly created comment
    * @memberof CommentService
    */
-  static create(comment) {
-    return Comment.create(comment);
+  static async create(comment) {
+    const key = 'getCommentsByMovie'+comment.movieId;
+    const response = await Comment.create(comment);
+
+    memCache.del(key);
+    return response;
   }
 
   /**
@@ -26,13 +33,22 @@ class CommentService {
    * @returns {Array} list of movie comments
    * @memberof CommentService
    */
-  static getCommentsByMovie(movieId) {
-    return Comment.findAll({ 
+  static async getCommentsByMovie(movieId) {
+    const key = 'getCommentsByMovie'+movieId;
+    const cacheContent = memCache.get(key);
+    
+    if(cacheContent)
+      return cacheContent;
+
+    const response = await Comment.findAll({ 
       where: {movieId: movieId},
       order: [
         ['id', 'DESC']
       ]
-    })
+    });
+
+    memCache.put(key, response);
+    return response;
   }
 
   /**
