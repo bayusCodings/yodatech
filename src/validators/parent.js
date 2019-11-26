@@ -27,7 +27,7 @@ const resolveValidation = (res, next, body, constraint) => {
           res.status(400).json({
             success: false, 
             message: 'Validation Error',
-            data: errors 
+            errors 
           })
         }
       }

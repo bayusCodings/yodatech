@@ -223,7 +223,7 @@ class MovieService {
           starships: item.starships,
           created: item.created,
           edited: item.edited,
-          ur: item.url,
+          url: item.url,
         };
       })
     );

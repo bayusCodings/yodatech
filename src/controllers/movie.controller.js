@@ -48,7 +48,7 @@ class MovieController {
       const data = {};
 
       const movieCharacters = await MovieService.getMovieCharacters(id);
-      data.result = movieCharacters;
+      data.result = MovieService.addMetaData(movieCharacters);
 
       if(typeof sort !== 'undefined'){
         const characters = MovieService.sortCharacters(movieCharacters, sort, order);
