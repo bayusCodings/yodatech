@@ -202,7 +202,7 @@ class MovieService {
    * @memberof MovieService
    */
   static countTotalHeight(data) {
-    const reducer = (accumulator, currentValue) => accumulator.height + currentValue.height;
+    const reducer = (accumulator, currentValue) => Number(accumulator.height) + Number(currentValue.height);
     return data.reduce(reducer);
   }
 
