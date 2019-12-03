@@ -186,7 +186,7 @@ class MovieService {
     const totalCharacterHeight = this.countTotalHeight(data);
     return {
       totalHeight: {
-        cm: totalCharacterHeight,
+        cm: totalCharacterHeight.toString(),
         feet: this.centimeterToFoot(totalCharacterHeight),
         inches: this.centimeterToInch(totalCharacterHeight)
       }
