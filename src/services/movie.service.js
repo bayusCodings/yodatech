@@ -202,8 +202,15 @@ class MovieService {
    * @memberof MovieService
    */
   static countTotalHeight(data) {
-    const reducer = (accumulator, currentValue) => Number(accumulator.height) + Number(currentValue.height);
-    return data.reduce(reducer);
+    let count = 0;
+    
+    data.forEach(item => {
+      if(!isNaN(item.height)){
+        count = count + Number(item.height)
+      }
+    });
+
+    return count;
   }
 
   /**
