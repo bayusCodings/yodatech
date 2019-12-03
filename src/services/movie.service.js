@@ -175,28 +175,35 @@ class MovieService {
   }
 
   /**
-   * add meta data to character list
+   * get total character height
    *
    * @static
    * @param {Array} data list of characters
-   * @returns {Array} list of characters with meta data
+   * @returns {object} total character height in cm, feet and inches
    * @memberof MovieService
    */
-  static addMetaData(data) {
-    const characters = data.map(item => {
-      return {
-        ...item,
-        metadata: {
-          totalHeight: {
-            cm: item.height,
-            feet: this.centimeterToFoot(item.height),
-            inches: this.centimeterToInch(item.height)
-          }
-        }
+  static getTotalHeight(data) {
+    const totalCharacterHeight = this.countTotalHeight(data);
+    return {
+      totalHeight: {
+        cm: totalCharacterHeight,
+        feet: this.centimeterToFoot(totalCharacterHeight),
+        inches: this.centimeterToInch(totalCharacterHeight)
       }
-    });
+    }
+  }
 
-    return characters;
+  /**
+   * sum all character height
+   *
+   * @static
+   * @param {Array} data list of characters
+   * @returns {number} total character height
+   * @memberof MovieService
+   */
+  static countTotalHeight(data) {
+    const reducer = (accumulator, currentValue) => accumulator.height + currentValue.height;
+    return data.reduce(reducer);
   }
 
   /**

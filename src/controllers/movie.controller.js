@@ -49,23 +49,30 @@ class MovieController {
       const data = {};
 
       const movieCharacters = await MovieService.getMovieCharacters(id);
-      data.result = MovieService.addMetaData(movieCharacters);
+      data.result = movieCharacters;
+      data.count = movieCharacters.length;
 
       if(typeof sort !== 'undefined'){
         const characters = MovieService.sortCharacters(movieCharacters, sort, order);
-        const sortedCharacters = MovieService.addMetaData(characters);
-        data.count = sortedCharacters.length;
-        data.result = sortedCharacters;
+        data.count = characters.length;
+        data.result = characters;
       }
 
       if(typeof gender !== 'undefined'){
         const characterList = MovieService.filterByGender(movieCharacters, gender);
-        const filteredCharacters = MovieService.addMetaData(characterList);
-        data.count = filteredCharacters.length;
-        data.result = filteredCharacters;
+        data.count = characterList.length;
+        data.result = characterList;
       }
 
-      return res.status(200).json({ success: true, message: "ok", data: data.result, count: data.count });
+      const metaData = MovieService.getTotalHeight(data.result);
+
+      return res.status(200).json({ 
+        success: true, 
+        message: "ok",
+        count: data.count,
+        data: data.result, 
+        metaData
+      });
     } catch(e) {
       next(e);
     }
